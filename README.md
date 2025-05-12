@@ -1,8 +1,3 @@
-# flutter_w1
+# flutter
 
 A new Flutter project.
-
-## Week 1
-- The first my app
-
-![img.png](img.png)
