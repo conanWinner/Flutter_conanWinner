@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_w1/home.dart';
 import 'package:flutter_w1/signup.dart';
@@ -14,6 +16,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
+        fontFamily: 'Roboto',
         colorScheme: ColorScheme.fromSeed(
           seedColor: const Color.fromARGB(255, 51, 255, 33),
         ),
@@ -46,134 +49,185 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-        padding: EdgeInsets.fromLTRB(30, 100, 30, 30),
+        // padding: EdgeInsets.fromLTRB(30, 0, 30, 30),
         constraints: BoxConstraints.expand(),
         color: Colors.white,
         child: ListView(
           // crossAxisAlignment: CrossAxisAlignment.start,
           // mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            Container(
-              padding: EdgeInsets.only(bottom: 20),
+
+            Stack(
               alignment: Alignment.center,
-              child: Image.asset("assets/images/icon_signin.png", height: 50),
+              children: [
+                Container(
+                  height: 160,
+                  child: SizedBox.expand(
+                    child: ImageFiltered(
+                      imageFilter: ImageFilter.blur(sigmaX: 50, sigmaY: 50),
+                      child: Image.asset("assets/images/BG.png"),
+                    ),
+                  ),
+                ),
+                Image.asset("assets/images/icon_signin.png", height: 50,),
+              ],
             ),
-            Padding(
-              padding: const EdgeInsets.only(top: 20, bottom: 20),
+            Container(
+              margin: EdgeInsets.fromLTRB(30, 0, 30, 20),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  Text(
-                    "Log in",
-                    style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
-                    textAlign: TextAlign.left,
-                  ),
-                  Text(
-                    "Enter your emails and password",
-                    style: TextStyle(fontSize: 13, color: Colors.blueGrey),
-                    textAlign: TextAlign.left,
-                  ),
-                ],
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(bottom: 20),
-              child: TextField(
-                controller: _emailController,
-                decoration: InputDecoration(
-                  labelText: "Email",
-                  errorText: _emailInvalid ? _emailErrorr : null,
-                  errorMaxLines: 2,
-                ),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(bottom: 10),
-              child: Stack(
-                alignment: AlignmentDirectional.centerEnd,
-                children: [
-                  TextField(
-                    controller: _passwordController,
-                    decoration: InputDecoration(
-                      labelText: "Password",
-                      errorText: _passInvalid ? _passwordErrorr : null,
-                      errorMaxLines: 3,
+                  Padding(
+                    padding: const EdgeInsets.only(top: 20, bottom: 20),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        Text(
+                          "Log in",
+                          style: TextStyle(
+                            color: Color(0xff181725),
+                            fontSize: 26,
+                            fontWeight: FontWeight.w600,
+                          ),
+                          textAlign: TextAlign.left,
+                        ),
+                        Text(
+                          "Enter your emails and password",
+                          style: TextStyle(fontSize: 16, color: Color(0xff7C7C7C), fontWeight: FontWeight.w100),
+                          textAlign: TextAlign.left,
+                        ),
+                      ],
                     ),
-                    obscureText: !_showPass,
                   ),
-                  GestureDetector(
-                    onTap: onToggleShowPass,
-                    child: Text(
-                      _showPass ? "HIDE" : "SHOW",
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 20),
+                    child: TextField(
                       style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 13,
-                        color: Colors.blue,
+                          fontSize: 18,
+                          color: Color(0xff181725),
+                          fontWeight: FontWeight.w200
+                      ),
+                      controller: _emailController,
+                      decoration: InputDecoration(
+                        labelStyle: TextStyle(
+                          fontSize: 16,
+                          color: Color(0xff7C7C7C),
+                        ),
+                        labelText: "Email",
+                        errorText: _emailInvalid ? _emailErrorr : null,
+                        errorMaxLines: 2,
                       ),
                     ),
                   ),
-                ],
-              ),
-            ),
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 10),
+                    child: Stack(
+                      alignment: AlignmentDirectional.centerEnd,
+                      children: [
+                        TextField(
+                          style: TextStyle(
+                              fontSize: 18,
+                              color: Color(0xff181725),
+                              fontWeight: FontWeight.w200
+                          ),
+                          controller: _passwordController,
+                          decoration: InputDecoration(
+                            labelStyle: TextStyle(
+                              fontSize: 16,
+                              color: Color(0xff7C7C7C),
+                            ),
+                            labelText: "Password",
+                            errorText: _passInvalid ? _passwordErrorr : null,
+                            errorMaxLines: 3,
+                          ),
+                          obscureText: !_showPass,
+                        ),
+                        GestureDetector(
+                          onTap: onToggleShowPass,
+                          child:  _showPass ? Icon(Icons.remove_red_eye_outlined, color: Color(0xff7C7C7C),) : Image.asset("assets/images/hidden.png", height: 20,),
 
-            Padding(
-              padding: const EdgeInsets.only(bottom: 30),
-              child: Text(
-                "Forgot Password?",
-                style: TextStyle(fontSize: 13, color: Colors.blue),
-                textAlign: TextAlign.right,
-              ),
-            ),
-
-            SizedBox(
-              height: 56,
-              width: double.infinity,
-              child: ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Color(0xFF53B175),
-                ),
-                onPressed: buttonSignin,
-                child: Text(
-                  "SIGN IN",
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white,
-                  ),
-                ),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(top: 20),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    "Don’t have an account? ",
-                    style: TextStyle(
-                      fontSize: 12,
-                      color: Color(0xff888888),
-                      fontWeight: FontWeight.bold,
+                        ),
+                      ],
                     ),
                   ),
-                  GestureDetector(
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => Signup()),
-                      );
-                    },
+
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 30),
                     child: Text(
-                      "Sign up",
-                      style: TextStyle(
-                        fontSize: 12,
-                        color: Color(0xFF53B175),
-                        fontWeight: FontWeight.bold,
+                      "Forgot Password?",
+                      style: TextStyle(fontSize: 14, color: Color(0xff7C7C7C), fontWeight: FontWeight.w300),
+                      textAlign: TextAlign.right,
+                    ),
+                  ),
+
+                  SizedBox(
+                    height: 56,
+                    width: double.infinity,
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Color(0xFF53B175),
+                      ),
+                      onPressed: buttonSignin,
+                      child: Text(
+                        "Log IN",
+                        style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.w600,
+                          color: Color(0xffFFF9FF),
+                        ),
                       ),
                     ),
                   ),
-                ],
+                  Padding(
+                    padding: const EdgeInsets.only(top: 20),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          "Don’t have an account? ",
+                          style: TextStyle(
+                            fontSize: 14,
+                            color: Color(0xff181725),
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                        GestureDetector(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(builder: (context) => Signup()),
+                            );
+                          },
+                          child: Text(
+                            "Sign up",
+                            style: TextStyle(
+                              fontSize: 14,
+                              color: Color(0xff53B175),
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+
+                  ]
               ),
+            ),
+
+            Stack(
+              children: [
+                Container(
+                  height: 160,
+                  child: SizedBox.expand(
+                    child: ImageFiltered(
+                      imageFilter: ImageFilter.blur(sigmaX: 80, sigmaY: 80),
+                      child: Image.asset("assets/images/BG.png"),
+                    ),
+                  ),
+                ),
+              ],
             ),
           ],
         ),
