@@ -1,16 +1,27 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_w1/signin.dart';
+import 'package:flutter_w1/detail.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
 
   @override
-  _HomePageState createState() => _HomePageState();
+  State<HomePage> createState() => _HomePageState();
 }
 
+List<List<String>> card = [
+  ["assets/images/apple.png", "Naturel Red 1", "1kg", "4.99"],
+  ["assets/images/apple.png", "Naturel Red 2", "1kg", "4.99"],
+  ["assets/images/apple.png", "Naturel Red 3", "1kg", "4.99"],
+];
+
+List<List<String>> subCard = [
+  ["assets/images/apple.png", "Pulses"],
+  ["assets/images/apple.png", "Naturel"],
+  ["assets/images/apple.png", "Rice"],
+];
+
+
 class _HomePageState extends State<HomePage> {
-  int _count = 1;
-  bool heart = false;
 
   @override
   Widget build(BuildContext context) {
@@ -21,271 +32,210 @@ class _HomePageState extends State<HomePage> {
         color: Colors.white,
         child: ListView(
           children: [
-            Stack(
+            Padding(
+              padding: const EdgeInsets.only(top: 20, bottom: 5),
+                child: Image.asset("assets/images/icon_signin.png", height: 30)),
+            Row(
+              spacing: 5,
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                GestureDetector(
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => MyApp()),
+                Icon(Icons.location_on),
+                Text("Dhaka, Banassre", style: TextStyle(fontWeight: FontWeight.w600, fontSize: 18),)
+              ],
+            ),
+            Padding(padding: EdgeInsets.only(bottom: 10, top: 20),
+              child: SearchAnchor(
+                  builder: (BuildContext context, SearchController controller) {
+                    return SearchBar(
+                      controller: controller,
+                      padding: const WidgetStatePropertyAll<EdgeInsets>(
+                        EdgeInsets.symmetric(horizontal: 16.0),
+                      ),
+                      onTap: () {
+                        controller.openView();
+                      },
+                      onChanged: (_) {
+                        controller.openView();
+                      },
+                      leading: const Icon(Icons.search),
                     );
                   },
-
-                  child: Image.asset("assets/images/left.png", height: 18),
-                ),
-
-                Container(
-                  padding: EdgeInsets.only(bottom: 20, top: 20),
-                  alignment: Alignment.center,
-                  child: Image.asset(
-                    "assets/images/apple_home.png",
-                    height: 200,
-                    width: 320,
-                  ),
-                ),
-              ],
+                  suggestionsBuilder: (context, controller) => {},),
             ),
-            Padding(
-              padding: const EdgeInsets.only(top: 20, bottom: 20),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      Text(
-                        "Naturel Red Apple",
-                        style: TextStyle(
-                          fontSize: 24,
-                          fontWeight: FontWeight.w400,
-                        ),
-                        textAlign: TextAlign.left,
-                      ),
-                      Text(
-                        "1kg, Price",
-                        style: TextStyle(
-                          fontSize: 16,
-                          color: Color(0xff7C7C7C),
-                          fontWeight: FontWeight.w600,
-                        ),
-                        textAlign: TextAlign.left,
-                      ),
-                    ],
-                  ),
-                  GestureDetector(
-                    onTap: () {
-                      setState(() {
-                        heart = !heart;
-                      });
-                    },
-                    child: Image.asset(
-                      "assets/images/heart.png",
-                      height: 24,
-                      width: 24,
-                      color: heart ? Colors.red : Colors.black,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Row(
-                  spacing: 10,
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    GestureDetector(
-                      onTap: () {
-                        setState(() {
-                          _count > 1 ? _count-- : _count;
-                        });
-                      },
-                      child: Text(
-                        "-",
-                        style: TextStyle(
-                          fontSize: 30,
-                          color: _count == 1 ? Colors.red : Color(0xff53B175),
-                        ),
-                      ),
-                    ),
-                    Container(
-                      decoration: BoxDecoration(
-                        color: Colors.white10,
-                        border: Border.all(color: Colors.grey, width: 1.0),
-                        borderRadius: BorderRadius.circular(30.0),
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.fromLTRB(10, 6, 10, 6),
-                        child: Text(
-                          _count.toString(),
-                          style: TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
-                      ),
-                    ),
-                    GestureDetector(
-                      onTap: () {
-                        setState(() {
-                          _count < 5 ? _count++ : _count;
-                        });
-                      },
-                      child: Text(
-                        "+",
-                        style: TextStyle(
-                          fontSize: 30,
-                          color: _count == 5 ? Colors.red : Color(0xff53B175),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-                Text(
-                  "\$4.99",
-                  style: TextStyle(fontWeight: FontWeight.w700, fontSize: 24),
-                ),
-              ],
-            ),
-
             Container(
-              height: 1.0, // Độ dày của đường kẻ
-              color: Color(0xE2E2E2B2), // Màu sắc của đường kẻ
-              margin: EdgeInsets.symmetric(
-                vertical: 10.0,
-              ), // Khoảng cách trên và dưới
+              margin: EdgeInsets.fromLTRB(0, 10, 0, 20),
+              child: Image.asset("assets/images/top_img.png"),
             ),
 
-            Column(
-              spacing: 10,
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      "Product Detail",
-                      style: TextStyle(
-                        fontWeight: FontWeight.w600,
-                        fontSize: 16,
-                      ),
-                    ),
-                    Image.asset("assets/images/show.png", height: 10),
-                  ],
-                ),
-                Text(
-                  "Apples are nutritious. Apples may be good for weight loss. apples may be good for your heart. As part of a healtful and varied diet.",
-                  style: TextStyle(fontSize: 13, color: Color(0xff7C7C7C)),
-                ),
-              ],
-            ),
+            _Content(title: "Exclusive Offer", card: card, checkSubCard: false,),
+            _Content(title: "Best Selling", card: card, checkSubCard: false,),
+            _Content(title: "Groceries", card: card, checkSubCard: true,),
 
-            Container(
-              height: 1.0, // Độ dày của đường kẻ
-              color: Color(0xE2E2E2B2), // Màu sắc của đường kẻ
-              margin: EdgeInsets.symmetric(
-                vertical: 10.0,
-              ), // Khoảng cách trên và dưới
-            ),
+          ]
+        )
+      ),
+      bottomNavigationBar: BottomNavigationBar(items: const <BottomNavigationBarItem>
+      [
+        BottomNavigationBarItem(icon: Icon(Icons.store_mall_directory_sharp, color: Colors.black,), label: 'Home'),
+        BottomNavigationBarItem(icon: Icon(Icons.manage_search_outlined, color: Colors.black), label: 'Explore'),
+        BottomNavigationBarItem(icon: Icon(Icons.shopping_cart_outlined, color: Colors.black), label: 'Cart'),
+        BottomNavigationBarItem(icon: Icon(Icons.favorite_outline, color: Colors.black), label: 'Favorite'),
+        BottomNavigationBarItem(icon: Icon(Icons.person, color: Colors.black), label: 'Account')
 
-            Padding(
-              padding: const EdgeInsets.only(top: 10, bottom: 10),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    "Nutritions",
-                    style: TextStyle(fontWeight: FontWeight.w600, fontSize: 16),
-                  ),
-                  Row(
-                    spacing: 10,
-                    children: [
-                      Container(
-                        decoration: BoxDecoration(
-                          color: Colors.black12,
-                          border: Border.all(color: Colors.white, width: 1.0),
-                          borderRadius: BorderRadius.circular(30.0),
-                        ),
-                        child: Padding(
-                          padding: const EdgeInsets.only(
-                            left: 6,
-                            right: 6,
-                            top: 3,
-                            bottom: 3,
-                          ),
-                          child: Text("100gr"),
-                        ),
-                      ),
-                      Image.asset("assets/images/right.png", height: 18),
-                    ],
-                  ),
-                ],
-              ),
-            ),
-
-            Container(
-              height: 1.0, // Độ dày của đường kẻ
-              color: Color(0xE2E2E2B2), // Màu sắc của đường kẻ
-              margin: EdgeInsets.symmetric(
-                vertical: 10.0,
-              ), // Khoảng cách trên và dưới
-            ),
-
-            Padding(
-              padding: const EdgeInsets.only(top: 10, bottom: 20),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    "Review",
-                    style: TextStyle(fontWeight: FontWeight.w600, fontSize: 16),
-                  ),
-                  Row(
-                    spacing: 10,
-                    children: [
-                      Row(
-                        children: List.generate(5, (index) {
-                          return Padding(
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 4.0,
-                            ),
-                            // Thêm khoảng cách giữa các hình (tùy chọn)
-                            child: Image.asset(
-                              "assets/images/star.png",
-                              height: 16,
-                            ),
-                          );
-                        }),
-                      ),
-                      Image.asset("assets/images/right.png", height: 18),
-                    ],
-                  ),
-                ],
-              ),
-            ),
-
-            SizedBox(
-              height: 56,
-              width: double.infinity,
-              child: ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Color(0xFF53B175),
-                ),
-                onPressed: () => {},
-                child: Text(
-                  "Add To Basket",
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white,
-                  ),
-                ),
-              ),
-            ),
-          ],
-        ),
+      ],
+        selectedItemColor: Color(0xff53B175),
       ),
     );
   }
 }
+
+class _Content extends StatelessWidget {
+  _Content({required this.title, required this.card, required this.checkSubCard});
+
+  final String title;
+  final List<List<String>> card;
+  List<List<String>> subCard = [
+    ["assets/images/apple.png", "Pulses"],
+    ["assets/images/apple.png", "Naturel"],
+    ["assets/images/apple.png", "Rice"],
+  ];
+  final checkSubCard;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      margin: EdgeInsets.only(bottom: 15),
+      child: Column(
+          children:
+          [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Text(title, style: TextStyle(fontSize: 24, fontWeight: FontWeight.w600),),
+                Text("See all", style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600, color: Color(0xff53B175))),
+              ],
+
+            ),
+
+            checkSubCard ? Column(
+              children: [
+                Container(
+                    margin: EdgeInsets.only(top: 20),
+                    height: 105,
+                    child: ListView.builder(scrollDirection: Axis.horizontal, itemCount: card.length, itemBuilder: (context, index) {
+                      return Card.outlined(child: _SubCard(image: subCard[index][0], cardName: subCard[index][1]));
+                    },
+                    )
+                ),
+
+                Container(
+                    margin: EdgeInsets.only(top: 20),
+                    height: 250,
+                    child: ListView.builder(scrollDirection: Axis.horizontal, itemCount: card.length, itemBuilder: (context, index) {
+                      return Card.outlined(child: _SampleCard(image: card[index][0], quality: card[index][2], cardName: card[index][1], price: card[index][3],));
+
+                    },
+                    )
+                ),
+              ],
+            ): Container(
+                margin: EdgeInsets.only(top: 20),
+                height: 250,
+                child: ListView.builder(scrollDirection: Axis.horizontal, itemCount: card.length, itemBuilder: (context, index) {
+                  return GestureDetector(
+                    onTap: () => {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => DetailPage()),
+                      )
+                    },
+                    child: Card.outlined(child: _SampleCard(image: card[index][0], quality: card[index][2], cardName: card[index][1], price: card[index][3],))
+                  );
+                },
+                )
+            ),
+
+          ]
+      ),
+    );
+  }
+}
+
+
+class _SampleCard extends StatelessWidget {
+  const _SampleCard({required this.image, required this.cardName,  required this.quality, required this.price});
+  final String image;
+  final String cardName;
+  final String quality;
+  final String price;
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(width: 174, height: 250,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          spacing: 20,
+          children: [
+            Container(margin: EdgeInsets.only(left: 30, top: 30),child: Image.asset(image, width: 104,)),
+            Container(
+              margin: EdgeInsets.only(left: 20),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(cardName, style: TextStyle(fontWeight: FontWeight.w600, fontSize: 16),),
+                  Text(quality, style: TextStyle(fontWeight: FontWeight.w100, fontSize: 14, color: Color(0xff7C7C7C)))
+                ],
+              ),
+            ),
+            Container(
+              margin: EdgeInsets.fromLTRB(20, 0, 20, 20),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text("\$${price}", style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),),
+                  Container(
+                    decoration: BoxDecoration(
+                      color: Color(0xff53B175),
+                      borderRadius: BorderRadius.circular(18),
+                    ),
+                      height: 46,
+                      width: 46,
+                      // color: ,
+                      child: Icon(Icons.add, color: Colors.white, size: 40,))
+                ]
+              ),
+            )
+          ],
+        )
+
+
+
+
+        );
+  }
+
+}
+
+class _SubCard extends StatelessWidget {
+  const _SubCard({required this.image, required this.cardName});
+  final String image;
+  final String cardName;
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(width: 250, height: 105,
+        child: Row(
+          children: [
+            Container(margin: EdgeInsets.only( right: 10), child: Image.asset(image, height: 72,)),
+            Text(cardName, style: TextStyle(fontWeight: FontWeight.w600, fontSize: 20, color: Color(0xff3E423F)),)
+          ],
+        )
+    );
+  }
+}
+
+
+

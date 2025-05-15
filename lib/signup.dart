@@ -1,5 +1,7 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
-import 'package:flutter_w1/home.dart';
+import 'package:flutter_w1/detail.dart';
 import 'package:flutter_w1/signin.dart';
 
 void main() {
@@ -14,6 +16,7 @@ class Signup extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
+        fontFamily: 'Roboto',
         colorScheme: ColorScheme.fromSeed(
           seedColor: const Color.fromARGB(255, 51, 255, 33),
         ),
@@ -46,165 +49,232 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-        padding: EdgeInsets.fromLTRB(30, 0, 30, 30),
         constraints: BoxConstraints.expand(),
         color: Colors.white,
         child: ListView(
           children: [
-            Container(
-              padding: EdgeInsets.only(bottom: 20, top: 20),
+
+            Stack(
               alignment: Alignment.center,
-              child: Image.asset("assets/images/icon_signin.png", height: 50),
+              children: [
+                Container(
+                  height: 100,
+                  child: SizedBox.expand(
+                    child: ImageFiltered(
+                      imageFilter: ImageFilter.blur(sigmaX: 50, sigmaY: 50),
+                      child: Image.asset("assets/images/BG.png"),
+                    ),
+                  ),
+                ),
+                Image.asset("assets/images/icon_signin.png", height: 50,),
+              ],
             ),
-            Padding(
-              padding: const EdgeInsets.only(top: 20, bottom: 20),
+
+            Container(
+              margin: EdgeInsets.fromLTRB(30, 0, 30, 0),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  GestureDetector(
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => MyApp()),
-                      );
-                    },
-                    child: Text(
-                      "Sign Up",
+                  Padding(
+                    padding: const EdgeInsets.only(top: 10, bottom: 5),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        GestureDetector(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(builder: (context) => MyApp()),
+                            );
+                          },
+                          child: Text(
+                            "Sign Up",
+                            style: TextStyle(
+                              fontSize: 26,
+                              fontWeight: FontWeight.bold,
+                            ),
+                            textAlign: TextAlign.left,
+                          ),
+                        ),
+
+                        Text(
+                          "Enter your credentials to continue",
+                          style: TextStyle(fontSize: 16, color: Color(0xff7C7C7C), fontWeight: FontWeight.w200),
+                          textAlign: TextAlign.left,
+                        ),
+                      ],
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 20),
+                    child: TextField(
                       style: TextStyle(
-                        fontSize: 30,
-                        fontWeight: FontWeight.bold,
+                          fontSize: 18,
+                          color: Color(0xff030303),
+                          fontWeight: FontWeight.w200
                       ),
+                      controller: _emailController,
+                      decoration: InputDecoration(labelText: "First Name", labelStyle: TextStyle(
+                          fontSize: 16,
+                          color: Color(0xff7C7C7C),
+                          fontWeight: FontWeight.w600
+                      )),
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 20),
+                    child: TextField(
+                      style: TextStyle(
+                          fontSize: 18,
+                          color: Color(0xff030303),
+                          fontWeight: FontWeight.w200
+                      ),
+                      controller: _emailController,
+                      decoration: InputDecoration(labelText: "Last Name", labelStyle: TextStyle(
+                          fontSize: 16,
+                          color: Color(0xff7C7C7C),
+                          fontWeight: FontWeight.w600
+                      )),
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 20),
+                    child: TextField(
+                      style: TextStyle(
+                          fontSize: 18,
+                          color: Color(0xff030303),
+                          fontWeight: FontWeight.w200
+                      ),
+                      controller: _emailController,
+                      decoration: InputDecoration(labelText: "Username", labelStyle: TextStyle(
+                          fontSize: 16,
+                          color: Color(0xff7C7C7C),
+                          fontWeight: FontWeight.w600
+                      )),
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 20),
+                    child: TextField(
+                      style: TextStyle(
+                          fontSize: 18,
+                          color: Color(0xff030303),
+                          fontWeight: FontWeight.w200
+                      ),
+                      controller: _emailController,
+                      decoration: InputDecoration(
+                        labelText: "Email",
+                        errorText: _emailInvalid ? _emailErrorr : null,
+                          labelStyle: TextStyle(
+                              fontSize: 16,
+                              color: Color(0xff7C7C7C),
+                              fontWeight: FontWeight.w600
+                          )
+                      ),
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 10),
+                    child: Stack(
+                      alignment: AlignmentDirectional.centerEnd,
+                      children: [
+                        TextField(
+                          style: TextStyle(
+                              fontSize: 18,
+                              color: Color(0xff030303),
+                              fontWeight: FontWeight.w200
+                          ),
+                          controller: _passwordController,
+                          decoration: InputDecoration(
+                            labelText: "Password",
+                            errorText: _passInvalid ? _passwordErrorr : null,
+                            errorMaxLines: 2,
+                              labelStyle: TextStyle(
+                                  fontSize: 16,
+                                  color: Color(0xff7C7C7C),
+                                  fontWeight: FontWeight.w600
+                              )
+                          ),
+                          obscureText: !_showPass,
+                        ),
+                        GestureDetector(
+                          onTap: onToggleShowPass,
+                          child: Text(
+                            _showPass ? "HIDE" : "SHOW",
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 13,
+                              color: Colors.blue,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 30),
+                    child: Text(
+                      "By continuing you agree to our Terms of Service and Privacy Policy.",
+                      style: TextStyle(fontSize: 14, color: Color(0xff888888)),
                       textAlign: TextAlign.left,
                     ),
                   ),
 
-                  Text(
-                    "Enter your credentials to continue",
-                    style: TextStyle(fontSize: 13, color: Colors.blueGrey),
-                    textAlign: TextAlign.left,
-                  ),
-                ],
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(bottom: 20),
-              child: TextField(
-                controller: _emailController,
-                decoration: InputDecoration(labelText: "First Name"),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(bottom: 20),
-              child: TextField(
-                controller: _emailController,
-                decoration: InputDecoration(labelText: "Last Name"),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(bottom: 20),
-              child: TextField(
-                controller: _emailController,
-                decoration: InputDecoration(labelText: "Username"),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(bottom: 20),
-              child: TextField(
-                controller: _emailController,
-                decoration: InputDecoration(
-                  labelText: "Email",
-                  errorText: _emailInvalid ? _emailErrorr : null,
-                ),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(bottom: 10),
-              child: Stack(
-                alignment: AlignmentDirectional.centerEnd,
-                children: [
-                  TextField(
-                    controller: _passwordController,
-                    decoration: InputDecoration(
-                      labelText: "Password",
-                      errorText: _passInvalid ? _passwordErrorr : null,
-                      errorMaxLines: 2,
-                    ),
-                    obscureText: !_showPass,
-                  ),
-                  GestureDetector(
-                    onTap: onToggleShowPass,
-                    child: Text(
-                      _showPass ? "HIDE" : "SHOW",
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 13,
-                        color: Colors.blue,
+                  SizedBox(
+                    height: 56,
+                    width: double.infinity,
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Color(0xFF53B175),
+                      ),
+                      onPressed: buttonSignup,
+                      child: Text(
+                        "SIGN IN",
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                        ),
                       ),
                     ),
                   ),
-                ],
-              ),
-            ),
-
-            Padding(
-              padding: const EdgeInsets.only(bottom: 30),
-              child: Text(
-                "By continuing you agree to our Terms of Service and Privacy Policy.",
-                style: TextStyle(fontSize: 13, color: Color(0xff888888)),
-                textAlign: TextAlign.left,
-              ),
-            ),
-
-            SizedBox(
-              height: 56,
-              width: double.infinity,
-              child: ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Color(0xFF53B175),
-                ),
-                onPressed: buttonSignup,
-                child: Text(
-                  "SIGN IN",
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white,
-                  ),
-                ),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(top: 20),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    "Already have an account? ",
-                    style: TextStyle(
-                      fontSize: 12,
-                      color: Color(0xff888888),
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  GestureDetector(
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => MyApp()),
-                      );
-                    },
-                    child: Text(
-                      "Sign in",
-                      style: TextStyle(
-                        fontSize: 12,
-                        color: Color(0xFF53B175),
-                        fontWeight: FontWeight.bold,
-                      ),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 20),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          "Already have an account? ",
+                          style: TextStyle(
+                            fontSize: 12,
+                            color: Color(0xff888888),
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        GestureDetector(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(builder: (context) => MyApp()),
+                            );
+                          },
+                          child: Text(
+                            "Sign in",
+                            style: TextStyle(
+                              fontSize: 12,
+                              color: Color(0xFF53B175),
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
                   ),
                 ],
               ),
-            ),
+            )
+
           ],
         ),
       ),
@@ -231,7 +301,7 @@ class _MyHomePageState extends State<MyHomePage> {
       if (!_emailInvalid && !_passInvalid) {
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => HomePage()),
+          MaterialPageRoute(builder: (context) => DetailPage()),
         );
       }
     });
