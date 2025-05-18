@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_w1/home.dart';
-import 'package:flutter_w1/signin.dart';
 
 class DetailPage extends StatefulWidget {
   const DetailPage({super.key});
@@ -17,20 +15,22 @@ class _DetailPageState extends State<DetailPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Color(0xffF2F3F2),
         leading: IconButton(
-          icon: Icon(Icons.arrow_back), // Icon mũi tên quay lại
+          icon: Icon(Icons.arrow_back_ios_new), // Icon mũi tên quay lại
           onPressed: () {
             Navigator.pop(context); // Hành động quay lại màn hình trước
           },
         ),
+        
       ),
       body: Container(
-        padding: EdgeInsets.fromLTRB(30, 0, 30, 30),
         constraints: BoxConstraints.expand(),
         color: Colors.white,
         child: ListView(
           children: [
             Container(
+              color: Color(0xffF2F3F2),
               padding: EdgeInsets.only(bottom: 20, top: 20),
               alignment: Alignment.center,
               child: Image.asset(
@@ -40,7 +40,7 @@ class _DetailPageState extends State<DetailPage> {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.only(top: 20, bottom: 20),
+              padding: const EdgeInsets.only(top: 20, bottom: 20, left: 30, right: 30),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -84,108 +84,114 @@ class _DetailPageState extends State<DetailPage> {
               ),
             ),
 
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Row(
-                  spacing: 10,
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    GestureDetector(
-                      onTap: () {
-                        setState(() {
-                          _count > 1 ? _count-- : _count;
-                        });
-                      },
-                      child: Text(
-                        "-",
-                        style: TextStyle(
-                          fontSize: 30,
-                          color: _count == 1 ? Colors.red : Color(0xff53B175),
-                        ),
-                      ),
-                    ),
-                    Container(
-                      decoration: BoxDecoration(
-                        color: Colors.white10,
-                        border: Border.all(color: Colors.grey, width: 1.0),
-                        borderRadius: BorderRadius.circular(30.0),
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.fromLTRB(10, 6, 10, 6),
+            Padding(
+              padding: const EdgeInsets.only(left: 30, right: 30),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Row(
+                    spacing: 10,
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      GestureDetector(
+                        onTap: () {
+                          setState(() {
+                            _count > 1 ? _count-- : _count;
+                          });
+                        },
                         child: Text(
-                          _count.toString(),
+                          "-",
                           style: TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.w600,
+                            fontSize: 30,
+                            color: _count == 1 ? Color(0xffB3B3B3) : Color(0xff53B175),
                           ),
                         ),
                       ),
-                    ),
-                    GestureDetector(
-                      onTap: () {
-                        setState(() {
-                          _count < 5 ? _count++ : _count;
-                        });
-                      },
-                      child: Text(
-                        "+",
-                        style: TextStyle(
-                          fontSize: 30,
-                          color: _count == 5 ? Colors.red : Color(0xff53B175),
+                      Container(
+                        decoration: BoxDecoration(
+                          color: Colors.white10,
+                          border: Border.all(color: Colors.grey, width: 1.0),
+                          borderRadius: BorderRadius.circular(30.0),
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.fromLTRB(10, 6, 10, 6),
+                          child: Text(
+                            _count.toString(),
+                            style: TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
                         ),
                       ),
-                    ),
-                  ],
-                ),
-                Text(
-                  "\$4.99",
-                  style: TextStyle(fontWeight: FontWeight.w700, fontSize: 24),
-                ),
-              ],
-            ),
-
-            Container(
-              height: 1.0, // Độ dày của đường kẻ
-              color: Color(0xE2E2E2B2), // Màu sắc của đường kẻ
-              margin: EdgeInsets.symmetric(
-                vertical: 10.0,
-              ), // Khoảng cách trên và dưới
-            ),
-
-            Column(
-              spacing: 10,
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      "Product Detail",
-                      style: TextStyle(
-                        fontWeight: FontWeight.w600,
-                        fontSize: 16,
+                      GestureDetector(
+                        onTap: () {
+                          setState(() {
+                            _count < 5 ? _count++ : _count;
+                          });
+                        },
+                        child: Text(
+                          "+",
+                          style: TextStyle(
+                            fontSize: 30,
+                            color: _count == 5 ? Color(0xffB3B3B3) : Color(0xff53B175),
+                          ),
+                        ),
                       ),
-                    ),
-                    Image.asset("assets/images/show.png", height: 10),
-                  ],
-                ),
-                Text(
-                  "Apples are nutritious. Apples may be good for weight loss. apples may be good for your heart. As part of a healtful and varied diet.",
-                  style: TextStyle(fontSize: 13, color: Color(0xff7C7C7C)),
-                ),
-              ],
+                    ],
+                  ),
+                  Text(
+                    "\$4.99",
+                    style: TextStyle(fontWeight: FontWeight.w700, fontSize: 24),
+                  ),
+                ],
+              ),
             ),
 
             Container(
               height: 1.0, // Độ dày của đường kẻ
-              color: Color(0xE2E2E2B2), // Màu sắc của đường kẻ
+              color: Color(0xffE2E2E2), // Màu sắc của đường kẻ
               margin: EdgeInsets.symmetric(
-                vertical: 10.0,
+                vertical: 10.0, horizontal: 30
               ), // Khoảng cách trên và dưới
             ),
 
             Padding(
-              padding: const EdgeInsets.only(top: 10, bottom: 10),
+              padding: const EdgeInsets.only(left: 30, right: 30),
+              child: Column(
+                spacing: 10,
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        "Product Detail",
+                        style: TextStyle(
+                          fontWeight: FontWeight.w600,
+                          fontSize: 16,
+                        ),
+                      ),
+                      Image.asset("assets/images/show.png", height: 10),
+                    ],
+                  ),
+                  Text(
+                    "Apples are nutritious. Apples may be good for weight loss. apples may be good for your heart. As part of a healtful and varied diet.",
+                    style: TextStyle(fontSize: 13, color: Color(0xff7C7C7C), fontWeight: FontWeight.w200),
+                  ),
+                ],
+              ),
+            ),
+
+            Container(
+              height: 1.0, // Độ dày của đường kẻ
+              color: Color(0xffE2E2E2), // Màu sắc của đường kẻ
+              margin: EdgeInsets.symmetric(
+                vertical: 10.0, horizontal: 30
+              ), // Khoảng cách trên và dưới
+            ),
+
+            Padding(
+              padding: const EdgeInsets.only(top: 10, bottom: 10, left: 30, right: 30),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -220,15 +226,15 @@ class _DetailPageState extends State<DetailPage> {
             ),
 
             Container(
-              height: 1.0, // Độ dày của đường kẻ
-              color: Color(0xE2E2E2B2), // Màu sắc của đường kẻ
+              height: 1.0,
+              color: Color(0xffE2E2E2),
               margin: EdgeInsets.symmetric(
-                vertical: 10.0,
+                vertical: 10.0, horizontal: 30
               ), // Khoảng cách trên và dưới
             ),
 
             Padding(
-              padding: const EdgeInsets.only(top: 10, bottom: 20),
+              padding: const EdgeInsets.only(top: 10, bottom: 20, left: 30, right: 30),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -260,9 +266,9 @@ class _DetailPageState extends State<DetailPage> {
               ),
             ),
 
-            SizedBox(
+            Container(
+              padding: EdgeInsets.fromLTRB(30, 0, 30, 0),
               height: 56,
-              width: double.infinity,
               child: ElevatedButton(
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Color(0xFF53B175),
@@ -271,6 +277,7 @@ class _DetailPageState extends State<DetailPage> {
                 child: Text(
                   "Add To Basket",
                   style: TextStyle(
+                    fontSize: 18,
                     fontWeight: FontWeight.bold,
                     color: Colors.white,
                   ),
