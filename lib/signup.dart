@@ -37,6 +37,9 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   bool _showPass = false;
+  TextEditingController _firstNameController = new TextEditingController();
+  TextEditingController _lastNameController = new TextEditingController();
+  TextEditingController _userNameController = new TextEditingController();
   TextEditingController _emailController = new TextEditingController();
   TextEditingController _passwordController = new TextEditingController();
   String _emailErrorr = "Please enter a valid email format!";
@@ -114,7 +117,7 @@ class _MyHomePageState extends State<MyHomePage> {
                           color: Color(0xff030303),
                           fontWeight: FontWeight.w200
                       ),
-                      controller: _emailController,
+                      controller: _firstNameController,
                       decoration: InputDecoration(labelText: "First Name", labelStyle: TextStyle(
                           fontSize: 16,
                           color: Color(0xff7C7C7C),
@@ -130,7 +133,7 @@ class _MyHomePageState extends State<MyHomePage> {
                           color: Color(0xff030303),
                           fontWeight: FontWeight.w200
                       ),
-                      controller: _emailController,
+                      controller: _lastNameController,
                       decoration: InputDecoration(labelText: "Last Name", labelStyle: TextStyle(
                           fontSize: 16,
                           color: Color(0xff7C7C7C),
@@ -146,7 +149,7 @@ class _MyHomePageState extends State<MyHomePage> {
                           color: Color(0xff030303),
                           fontWeight: FontWeight.w200
                       ),
-                      controller: _emailController,
+                      controller: _userNameController,
                       decoration: InputDecoration(labelText: "Username", labelStyle: TextStyle(
                           fontSize: 16,
                           color: Color(0xff7C7C7C),
@@ -200,14 +203,8 @@ class _MyHomePageState extends State<MyHomePage> {
                         ),
                         GestureDetector(
                           onTap: onToggleShowPass,
-                          child: Text(
-                            _showPass ? "HIDE" : "SHOW",
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 13,
-                              color: Colors.blue,
-                            ),
-                          ),
+                          child:  _showPass ? Icon(Icons.remove_red_eye_outlined, color: Color(0xff7C7C7C),) : Image.asset("assets/images/hidden.png", height: 20,),
+
                         ),
                       ],
                     ),
@@ -215,11 +212,21 @@ class _MyHomePageState extends State<MyHomePage> {
 
                   Padding(
                     padding: const EdgeInsets.only(bottom: 30),
-                    child: Text(
-                      "By continuing you agree to our Terms of Service and Privacy Policy.",
-                      style: TextStyle(fontSize: 14, color: Color(0xff888888)),
-                      textAlign: TextAlign.left,
-                    ),
+                    child: RichText(
+                      text: TextSpan(
+                        text: 'By continuing you agree to our  ',
+                        style: TextStyle(
+                          fontWeight: FontWeight.w200,
+                          fontSize: 14,
+                          color: Color(0xff7C7C7C),
+                        ),
+                        children: <TextSpan>[
+                          TextSpan(text: 'Terms of Service', style: TextStyle(color: Color(0xff53B175))),
+                          TextSpan(text: ' and '),
+                          TextSpan(text: 'Privacy Policy.', style: TextStyle(color: Color(0xff53B175))),
+                        ],
+                      ),
+                    )
                   ),
 
                   SizedBox(
@@ -231,10 +238,11 @@ class _MyHomePageState extends State<MyHomePage> {
                       ),
                       onPressed: buttonSignup,
                       child: Text(
-                        "SIGN IN",
+                        "SIGN UP",
                         style: TextStyle(
+                          fontSize: 18,
                           fontWeight: FontWeight.bold,
-                          color: Colors.white,
+                          color: Color(0xffFFF9FF),
                         ),
                       ),
                     ),
@@ -247,9 +255,9 @@ class _MyHomePageState extends State<MyHomePage> {
                         Text(
                           "Already have an account? ",
                           style: TextStyle(
-                            fontSize: 12,
-                            color: Color(0xff888888),
-                            fontWeight: FontWeight.bold,
+                            fontSize: 14,
+                            color: Color(0xff030303),
+                            fontWeight: FontWeight.w600,
                           ),
                         ),
                         GestureDetector(
@@ -262,9 +270,9 @@ class _MyHomePageState extends State<MyHomePage> {
                           child: Text(
                             "Sign in",
                             style: TextStyle(
-                              fontSize: 12,
+                              fontSize: 14,
                               color: Color(0xFF53B175),
-                              fontWeight: FontWeight.bold,
+                              fontWeight: FontWeight.w600,
                             ),
                           ),
                         ),

@@ -2,6 +2,7 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_w1/home.dart';
+import 'package:flutter_w1/navigate.dart';
 import 'package:flutter_w1/signup.dart';
 
 void main() {
@@ -61,7 +62,7 @@ class _MyHomePageState extends State<MyHomePage> {
               alignment: Alignment.center,
               children: [
                 Container(
-                  height: 160,
+                  height: 150,
                   child: SizedBox.expand(
                     child: ImageFiltered(
                       imageFilter: ImageFilter.blur(sigmaX: 50, sigmaY: 50),
@@ -170,7 +171,7 @@ class _MyHomePageState extends State<MyHomePage> {
                       ),
                       onPressed: buttonSignin,
                       child: Text(
-                        "Log IN",
+                        "Log In",
                         style: TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.w600,
@@ -255,7 +256,7 @@ class _MyHomePageState extends State<MyHomePage> {
       if (!_emailInvalid && !_passInvalid) {
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => HomePage()),
+          MaterialPageRoute(builder: (context) => NavigateBottom()),
         );
       }
     });
