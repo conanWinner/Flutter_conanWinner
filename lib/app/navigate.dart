@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_w1/account.dart';
-import 'package:flutter_w1/cart.dart';
-import 'package:flutter_w1/detail.dart';
-import 'package:flutter_w1/explore.dart';
-import 'package:flutter_w1/favourite.dart';
-import 'package:flutter_w1/home.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_w1/features/account/cubit/account_cubit.dart';
+import 'package:flutter_w1/features/account/view/account_page.dart';
+import 'package:flutter_w1/features/cart/cart.dart';
+import 'package:flutter_w1/features/explore/cubit/explore_cubit.dart';
+import 'package:flutter_w1/features/explore/explore.dart';
+import 'package:flutter_w1/features/favourite/favourite.dart';
+import 'package:flutter_w1/features/home/home.dart';
+
+import '../features/home/cubit/home_cubit.dart';
 
 class NavigateBottom extends StatefulWidget {
   const NavigateBottom({super.key});
@@ -14,12 +18,15 @@ class NavigateBottom extends StatefulWidget {
 }
 
 class _NavigateBottomState extends State<NavigateBottom> {
-  static const List<Widget> _pageOption = [
-    HomePage(),
-    ExplorePage(),
-    CartPage(),
-    FavouritePage(),
-    AccountPage(),
+  static List<Widget> get _pageOption => [
+    BlocProvider<HomeCubit>(
+      create: (_) => HomeCubit()..fetchProducts(),
+      child: const HomePage(),
+    ),
+    BlocProvider(create: (_) => ExploreCubit()..fetchCategories(), child: const ExplorePage()),
+    const CartPage(),
+    const FavouritePage(),
+    BlocProvider(create: (_) => AccountCubit()..fetchAccount(), child: const AccountPage()),
   ];
 
   int _selectedIndex = 0;
@@ -64,5 +71,3 @@ class _NavigateBottomState extends State<NavigateBottom> {
     );
   }
 }
-
-

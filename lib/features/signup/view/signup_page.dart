@@ -1,52 +1,26 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_w1/detail.dart';
-import 'package:flutter_w1/signin.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_w1/features/detail/view/detail_page.dart';
+import 'package:flutter_w1/features/home/home.dart';
+import 'package:flutter_w1/features/login/login.dart';
+import 'package:flutter_w1/features/signup/cubit/signup_cubit.dart';
 
-void main() {
-  runApp(const Signup());
-}
-
-class Signup extends StatelessWidget {
-  const Signup({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        fontFamily: 'Roboto',
-        colorScheme: ColorScheme.fromSeed(
-          seedColor: const Color.fromARGB(255, 51, 255, 33),
-        ),
-      ),
-      home: const MyHomePage(title: 'conanWinner'),
-    );
-  }
-}
-
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
-
-  final String title;
+class SignupPage extends StatefulWidget {
+  const SignupPage({super.key});
 
   @override
-  State<MyHomePage> createState() => _MyHomePageState();
+  State<SignupPage> createState() => _SignupPageState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
+class _SignupPageState extends State<SignupPage> {
   bool _showPass = false;
   TextEditingController _firstNameController = new TextEditingController();
   TextEditingController _lastNameController = new TextEditingController();
   TextEditingController _userNameController = new TextEditingController();
   TextEditingController _emailController = new TextEditingController();
   TextEditingController _passwordController = new TextEditingController();
-  String _emailErrorr = "Please enter a valid email format!";
-  String _passwordErrorr =
-      "Password must be at least 6 characters with 1 uppercase letter, 1 lowercase letter, and 1 number.";
-  bool _emailInvalid = false;
-  bool _passInvalid = false;
 
   @override
   Widget build(BuildContext context) {
@@ -56,7 +30,6 @@ class _MyHomePageState extends State<MyHomePage> {
         color: Colors.white,
         child: ListView(
           children: [
-
             Stack(
               alignment: Alignment.center,
               children: [
@@ -69,7 +42,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     ),
                   ),
                 ),
-                Image.asset("assets/images/icon_signin.png", height: 50,),
+                Image.asset("assets/images/icon_signin.png", height: 50),
               ],
             ),
 
@@ -88,7 +61,9 @@ class _MyHomePageState extends State<MyHomePage> {
                           onTap: () {
                             Navigator.push(
                               context,
-                              MaterialPageRoute(builder: (context) => MyApp()),
+                              MaterialPageRoute(
+                                builder: (context) => HomePage(),
+                              ),
                             );
                           },
                           child: Text(
@@ -103,7 +78,11 @@ class _MyHomePageState extends State<MyHomePage> {
 
                         Text(
                           "Enter your credentials to continue",
-                          style: TextStyle(fontSize: 16, color: Color(0xff7C7C7C), fontWeight: FontWeight.w200),
+                          style: TextStyle(
+                            fontSize: 16,
+                            color: Color(0xff7C7C7C),
+                            fontWeight: FontWeight.w200,
+                          ),
                           textAlign: TextAlign.left,
                         ),
                       ],
@@ -113,68 +92,84 @@ class _MyHomePageState extends State<MyHomePage> {
                     padding: const EdgeInsets.only(bottom: 20),
                     child: TextField(
                       style: TextStyle(
-                          fontSize: 18,
-                          color: Color(0xff030303),
-                          fontWeight: FontWeight.w200
+                        fontSize: 18,
+                        color: Color(0xff030303),
+                        fontWeight: FontWeight.w200,
                       ),
                       controller: _firstNameController,
-                      decoration: InputDecoration(labelText: "First Name", labelStyle: TextStyle(
+                      decoration: InputDecoration(
+                        labelText: "First Name",
+                        labelStyle: TextStyle(
                           fontSize: 16,
                           color: Color(0xff7C7C7C),
-                          fontWeight: FontWeight.w600
-                      )),
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
                     ),
                   ),
                   Padding(
                     padding: const EdgeInsets.only(bottom: 20),
                     child: TextField(
                       style: TextStyle(
-                          fontSize: 18,
-                          color: Color(0xff030303),
-                          fontWeight: FontWeight.w200
+                        fontSize: 18,
+                        color: Color(0xff030303),
+                        fontWeight: FontWeight.w200,
                       ),
                       controller: _lastNameController,
-                      decoration: InputDecoration(labelText: "Last Name", labelStyle: TextStyle(
+                      decoration: InputDecoration(
+                        labelText: "Last Name",
+                        labelStyle: TextStyle(
                           fontSize: 16,
                           color: Color(0xff7C7C7C),
-                          fontWeight: FontWeight.w600
-                      )),
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
                     ),
                   ),
                   Padding(
                     padding: const EdgeInsets.only(bottom: 20),
                     child: TextField(
                       style: TextStyle(
-                          fontSize: 18,
-                          color: Color(0xff030303),
-                          fontWeight: FontWeight.w200
+                        fontSize: 18,
+                        color: Color(0xff030303),
+                        fontWeight: FontWeight.w200,
                       ),
                       controller: _userNameController,
-                      decoration: InputDecoration(labelText: "Username", labelStyle: TextStyle(
+                      decoration: InputDecoration(
+                        labelText: "Username",
+                        labelStyle: TextStyle(
                           fontSize: 16,
                           color: Color(0xff7C7C7C),
-                          fontWeight: FontWeight.w600
-                      )),
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
                     ),
                   ),
                   Padding(
                     padding: const EdgeInsets.only(bottom: 20),
-                    child: TextField(
-                      style: TextStyle(
-                          fontSize: 18,
-                          color: Color(0xff030303),
-                          fontWeight: FontWeight.w200
-                      ),
-                      controller: _emailController,
-                      decoration: InputDecoration(
-                        labelText: "Email",
-                        errorText: _emailInvalid ? _emailErrorr : null,
-                          labelStyle: TextStyle(
+                    child: BlocBuilder<SignupCubit, SignupState>(
+                      builder: (context, state) {
+                        return TextField(
+                          style: TextStyle(
+                            fontSize: 18,
+                            color: Color(0xff030303),
+                            fontWeight: FontWeight.w200,
+                          ),
+                          controller: _emailController,
+                          decoration: InputDecoration(
+                            labelText: "Email",
+                            errorText:
+                                state.emailError.isNotEmpty
+                                    ? state.emailError
+                                    : null,
+                            labelStyle: TextStyle(
                               fontSize: 16,
                               color: Color(0xff7C7C7C),
-                              fontWeight: FontWeight.w600
-                          )
-                      ),
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                        );
+                      },
                     ),
                   ),
                   Padding(
@@ -182,29 +177,45 @@ class _MyHomePageState extends State<MyHomePage> {
                     child: Stack(
                       alignment: AlignmentDirectional.centerEnd,
                       children: [
-                        TextField(
-                          style: TextStyle(
-                              fontSize: 18,
-                              color: Color(0xff030303),
-                              fontWeight: FontWeight.w200
-                          ),
-                          controller: _passwordController,
-                          decoration: InputDecoration(
-                            labelText: "Password",
-                            errorText: _passInvalid ? _passwordErrorr : null,
-                            errorMaxLines: 2,
-                              labelStyle: TextStyle(
+                        BlocBuilder<SignupCubit, SignupState>(
+                          builder: (context, state) {
+                            return TextField(
+                              style: TextStyle(
+                                fontSize: 18,
+                                color: Color(0xff030303),
+                                fontWeight: FontWeight.w200,
+                              ),
+                              controller: _passwordController,
+                              decoration: InputDecoration(
+                                labelText: "Password",
+                                errorText:
+                                    state.emailError.isNotEmpty
+                                        ? state.emailError
+                                        : null,
+
+                                errorMaxLines: 2,
+                                labelStyle: TextStyle(
                                   fontSize: 16,
                                   color: Color(0xff7C7C7C),
-                                  fontWeight: FontWeight.w600
-                              )
-                          ),
-                          obscureText: !_showPass,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              ),
+                              obscureText: !_showPass,
+                            );
+                          },
                         ),
                         GestureDetector(
                           onTap: onToggleShowPass,
-                          child:  _showPass ? Icon(Icons.remove_red_eye_outlined, color: Color(0xff7C7C7C),) : Image.asset("assets/images/hidden.png", height: 20,),
-
+                          child:
+                              _showPass
+                                  ? Icon(
+                                    Icons.remove_red_eye_outlined,
+                                    color: Color(0xff7C7C7C),
+                                  )
+                                  : Image.asset(
+                                    "assets/images/hidden.png",
+                                    height: 20,
+                                  ),
                         ),
                       ],
                     ),
@@ -221,30 +232,48 @@ class _MyHomePageState extends State<MyHomePage> {
                           color: Color(0xff7C7C7C),
                         ),
                         children: <TextSpan>[
-                          TextSpan(text: 'Terms of Service', style: TextStyle(color: Color(0xff53B175))),
+                          TextSpan(
+                            text: 'Terms of Service',
+                            style: TextStyle(color: Color(0xff53B175)),
+                          ),
                           TextSpan(text: ' and '),
-                          TextSpan(text: 'Privacy Policy.', style: TextStyle(color: Color(0xff53B175))),
+                          TextSpan(
+                            text: 'Privacy Policy.',
+                            style: TextStyle(color: Color(0xff53B175)),
+                          ),
                         ],
                       ),
-                    )
+                    ),
                   ),
 
                   SizedBox(
                     height: 56,
                     width: double.infinity,
-                    child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Color(0xFF53B175),
-                      ),
-                      onPressed: buttonSignup,
-                      child: Text(
-                        "SIGN UP",
-                        style: TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                          color: Color(0xffFFF9FF),
-                        ),
-                      ),
+                    child: BlocBuilder<SignupCubit, SignupState>(
+                      builder: (context, state) {
+                        return ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Color(0xFF53B175),
+                          ),
+                          onPressed:
+                              !state.disableButton
+                                  ? () {
+                                    context.read<SignupCubit>().login(
+                                      _emailController.text,
+                                      _passwordController.text,
+                                    );
+                                  }
+                                  : null,
+                          child: Text(
+                            "SIGN UP",
+                            style: TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold,
+                              color: Color(0xffFFF9FF),
+                            ),
+                          ),
+                        );
+                      },
                     ),
                   ),
                   Padding(
@@ -262,10 +291,7 @@ class _MyHomePageState extends State<MyHomePage> {
                         ),
                         GestureDetector(
                           onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(builder: (context) => MyApp()),
-                            );
+                            Navigator.pop(context);
                           },
                           child: Text(
                             "Sign in",
@@ -281,8 +307,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   ),
                 ],
               ),
-            )
-
+            ),
           ],
         ),
       ),
@@ -293,51 +318,5 @@ class _MyHomePageState extends State<MyHomePage> {
     setState(() {
       _showPass = !_showPass;
     });
-  }
-
-  void buttonSignup() {
-    setState(() {
-      if (!validateEmail(_emailController.text))
-        _emailInvalid = true;
-      else
-        _emailInvalid = false;
-      if (!validatePassword(_passwordController.text))
-        _passInvalid = true;
-      else
-        _passInvalid = false;
-
-      if (!_emailInvalid && !_passInvalid) {
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => DetailPage()),
-        );
-      }
-    });
-  }
-
-  bool validateEmail(String email) {
-    if (!email.contains("@")) return false;
-    var tmp = email.split("@");
-    if (tmp[0].length < 2) return false;
-    return true;
-  }
-
-  bool validatePassword(String password) {
-    int up = 0;
-    int low = 0;
-    int num = 0;
-    if (password.length < 6) return false;
-    var value = password.codeUnits;
-    for (int i = 0; i < value.length; i++) {
-      if (value[i] >= 'A'.codeUnits.first && value[i] <= 'Z'.codeUnitAt(0))
-        up++;
-      if (value[i] >= 'a'.codeUnits.first && value[i] <= 'z'.codeUnits.first)
-        low++;
-      if (value[i] >= 0 && value[i] <= 9) num++;
-    }
-
-    if (up == 0 || low == 0 || num == 0) return false;
-
-    return true;
   }
 }

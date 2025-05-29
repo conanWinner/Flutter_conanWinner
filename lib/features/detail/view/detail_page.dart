@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_w1/core/utils/formatPrice.dart';
+import 'package:flutter_w1/data/models/Product.dart';
+import 'package:flutter_w1/features/detail/cubit/detail_cubit.dart';
 
 class DetailPage extends StatefulWidget {
   const DetailPage({super.key});
@@ -8,9 +12,6 @@ class DetailPage extends StatefulWidget {
 }
 
 class _DetailPageState extends State<DetailPage> {
-  int _count = 1;
-  bool heart = false;
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -22,7 +23,6 @@ class _DetailPageState extends State<DetailPage> {
             Navigator.pop(context); // Hành động quay lại màn hình trước
           },
         ),
-        
       ),
       body: Container(
         constraints: BoxConstraints.expand(),
@@ -40,7 +40,12 @@ class _DetailPageState extends State<DetailPage> {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.only(top: 20, bottom: 20, left: 30, right: 30),
+              padding: const EdgeInsets.only(
+                top: 20,
+                bottom: 20,
+                left: 30,
+                right: 30,
+              ),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -48,111 +53,138 @@ class _DetailPageState extends State<DetailPage> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
-                      Text(
-                        "Naturel Red Apple",
-                        style: TextStyle(
-                          fontSize: 24,
-                          fontWeight: FontWeight.w400,
-                        ),
-                        textAlign: TextAlign.left,
+                      BlocBuilder<DetailCubit, DetailState>(
+                        builder: (context, state) {
+                          return Text(
+                            state.product.cardName,
+                            style: TextStyle(
+                              fontSize: 24,
+                              fontWeight: FontWeight.w400,
+                            ),
+                            textAlign: TextAlign.left,
+                          );
+                        },
                       ),
-                      Text(
-                        "1kg, Price",
-                        style: TextStyle(
-                          fontSize: 16,
-                          color: Color(0xff7C7C7C),
-                          fontWeight: FontWeight.w600,
-                        ),
-                        textAlign: TextAlign.left,
+                      BlocBuilder<DetailCubit, DetailState>(
+                        builder: (context, state) {
+                          return Text(
+                            "${state.product.weight}, Price",
+                            style: TextStyle(
+                              fontSize: 16,
+                              color: Color(0xff7C7C7C),
+                              fontWeight: FontWeight.w600,
+                            ),
+                            textAlign: TextAlign.left,
+                          );
+                        },
                       ),
                     ],
                   ),
-                  GestureDetector(
-                    onTap: () {
-                      setState(() {
-                        heart = !heart;
-                      });
+                  BlocBuilder<DetailCubit, DetailState>(
+                    builder: (context, state) {
+                      return GestureDetector(
+                        onTap: () {
+                          context.read<DetailCubit>().toggleHeart();
+                        },
+                        child: Image.asset(
+                          "assets/images/heart.png",
+                          height: 24,
+                          width: 24,
+                          color: state.isHearted ? Colors.red : Colors.black,
+                        ),
+                      );
                     },
-                    child: Image.asset(
-                      "assets/images/heart.png",
-                      height: 24,
-                      width: 24,
-                      color: heart ? Colors.red : Colors.black,
-                    ),
                   ),
                 ],
               ),
             ),
 
-            Padding(
-              padding: const EdgeInsets.only(left: 30, right: 30),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Row(
-                    spacing: 10,
-                    mainAxisAlignment: MainAxisAlignment.start,
+            BlocBuilder<DetailCubit, DetailState>(
+              builder: (context, state) {
+                return Padding(
+                  padding: const EdgeInsets.only(left: 30, right: 30),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      GestureDetector(
-                        onTap: () {
-                          setState(() {
-                            _count > 1 ? _count-- : _count;
-                          });
-                        },
-                        child: Text(
-                          "-",
-                          style: TextStyle(
-                            fontSize: 30,
-                            color: _count == 1 ? Color(0xffB3B3B3) : Color(0xff53B175),
-                          ),
-                        ),
-                      ),
-                      Container(
-                        decoration: BoxDecoration(
-                          color: Colors.white10,
-                          border: Border.all(color: Colors.grey, width: 1.0),
-                          borderRadius: BorderRadius.circular(30.0),
-                        ),
-                        child: Padding(
-                          padding: const EdgeInsets.fromLTRB(10, 6, 10, 6),
-                          child: Text(
-                            _count.toString(),
-                            style: TextStyle(
-                              fontSize: 18,
-                              fontWeight: FontWeight.w600,
+                      Row(
+                        spacing: 10,
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          GestureDetector(
+                            onTap: () {
+                              context.read<DetailCubit>().decrementQuantity();
+                            },
+                            child: Text(
+                              "-",
+                              style: TextStyle(
+                                fontSize: 30,
+                                color:
+                                    state.product.quantity == 1
+                                        ? Color(0xffB3B3B3)
+                                        : Color(0xff53B175),
+                              ),
                             ),
                           ),
-                        ),
-                      ),
-                      GestureDetector(
-                        onTap: () {
-                          setState(() {
-                            _count < 5 ? _count++ : _count;
-                          });
-                        },
-                        child: Text(
-                          "+",
-                          style: TextStyle(
-                            fontSize: 30,
-                            color: _count == 5 ? Color(0xffB3B3B3) : Color(0xff53B175),
+                          Container(
+                            decoration: BoxDecoration(
+                              color: Colors.white10,
+                              border: Border.all(
+                                color: Colors.grey,
+                                width: 1.0,
+                              ),
+                              borderRadius: BorderRadius.circular(30.0),
+                            ),
+                            child: Padding(
+                              padding: const EdgeInsets.fromLTRB(10, 6, 10, 6),
+                              child: Text(
+                                state.product.quantity.toString(),
+                                style: TextStyle(
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              ),
+                            ),
                           ),
-                        ),
+                          GestureDetector(
+                            onTap: () {
+                              context.read<DetailCubit>().incrementQuantity();
+                            },
+                            child: Text(
+                              "+",
+                              style: TextStyle(
+                                fontSize: 30,
+                                color:
+                                    state.product.quantity == 5
+                                        ? Color(0xffB3B3B3)
+                                        : Color(0xff53B175),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                      BlocBuilder<DetailCubit, DetailState>(
+                        builder: (context, state) {
+                          return Text(
+                            "\$${formatPrice(double.parse(state.product.price!) * state.product.quantity)}",
+                            style: TextStyle(
+                              fontWeight: FontWeight.w700,
+                              fontSize: 24,
+                            ),
+                          );
+                        },
                       ),
                     ],
                   ),
-                  Text(
-                    "\$4.99",
-                    style: TextStyle(fontWeight: FontWeight.w700, fontSize: 24),
-                  ),
-                ],
-              ),
+                );
+              },
             ),
 
             Container(
               height: 1.0, // Độ dày của đường kẻ
               color: Color(0xffE2E2E2), // Màu sắc của đường kẻ
               margin: EdgeInsets.symmetric(
-                vertical: 10.0, horizontal: 30
+                vertical: 10.0,
+                horizontal: 30,
               ), // Khoảng cách trên và dưới
             ),
 
@@ -176,7 +208,11 @@ class _DetailPageState extends State<DetailPage> {
                   ),
                   Text(
                     "Apples are nutritious. Apples may be good for weight loss. apples may be good for your heart. As part of a healtful and varied diet.",
-                    style: TextStyle(fontSize: 13, color: Color(0xff7C7C7C), fontWeight: FontWeight.w200),
+                    style: TextStyle(
+                      fontSize: 13,
+                      color: Color(0xff7C7C7C),
+                      fontWeight: FontWeight.w200,
+                    ),
                   ),
                 ],
               ),
@@ -186,12 +222,18 @@ class _DetailPageState extends State<DetailPage> {
               height: 1.0, // Độ dày của đường kẻ
               color: Color(0xffE2E2E2), // Màu sắc của đường kẻ
               margin: EdgeInsets.symmetric(
-                vertical: 10.0, horizontal: 30
+                vertical: 10.0,
+                horizontal: 30,
               ), // Khoảng cách trên và dưới
             ),
 
             Padding(
-              padding: const EdgeInsets.only(top: 10, bottom: 10, left: 30, right: 30),
+              padding: const EdgeInsets.only(
+                top: 10,
+                bottom: 10,
+                left: 30,
+                right: 30,
+              ),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -229,12 +271,18 @@ class _DetailPageState extends State<DetailPage> {
               height: 1.0,
               color: Color(0xffE2E2E2),
               margin: EdgeInsets.symmetric(
-                vertical: 10.0, horizontal: 30
+                vertical: 10.0,
+                horizontal: 30,
               ), // Khoảng cách trên và dưới
             ),
 
             Padding(
-              padding: const EdgeInsets.only(top: 10, bottom: 20, left: 30, right: 30),
+              padding: const EdgeInsets.only(
+                top: 10,
+                bottom: 20,
+                left: 30,
+                right: 30,
+              ),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
