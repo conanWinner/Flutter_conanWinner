@@ -1,0 +1,1 @@
+export 'view/food_type.dart';

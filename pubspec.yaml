@@ -37,6 +37,9 @@ dependencies:
   google_fonts: ^6.2.1
   flutter_bloc: ^8.1.5
   equatable: ^2.0.5
+  dropdown_button2: ^2.3.8
+  pair: ^0.1.2
+
 
 dev_dependencies:
   flutter_test:
@@ -62,6 +65,7 @@ flutter:
 
   assets:
     - assets/images/
+    - assets/images/typefood/
 
   fonts:
     - family: RobotoMono

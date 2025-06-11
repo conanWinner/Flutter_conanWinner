@@ -114,15 +114,13 @@ class _DetailPageState extends State<DetailPage> {
                             onTap: () {
                               context.read<DetailCubit>().decrementQuantity();
                             },
-                            child: Text(
-                              "-",
-                              style: TextStyle(
-                                fontSize: 30,
-                                color:
-                                    state.product.quantity == 1
-                                        ? Color(0xffB3B3B3)
-                                        : Color(0xff53B175),
-                              ),
+                            child: Icon(
+                              Icons.remove,
+                              color:
+                                  state.product.quantity == 1
+                                      ? Color(0xffB3B3B3)
+                                      : Color(0xff53B175),
+                              size: 24,
                             ),
                           ),
                           Container(
@@ -149,15 +147,13 @@ class _DetailPageState extends State<DetailPage> {
                             onTap: () {
                               context.read<DetailCubit>().incrementQuantity();
                             },
-                            child: Text(
-                              "+",
-                              style: TextStyle(
-                                fontSize: 30,
-                                color:
-                                    state.product.quantity == 5
-                                        ? Color(0xffB3B3B3)
-                                        : Color(0xff53B175),
-                              ),
+                            child: Icon(
+                              Icons.add,
+                              color:
+                                  state.product.quantity == 5
+                                      ? Color(0xffB3B3B3)
+                                      : Color(0xff53B175),
+                              size: 24,
                             ),
                           ),
                         ],
@@ -180,12 +176,9 @@ class _DetailPageState extends State<DetailPage> {
             ),
 
             Container(
-              height: 1.0, // Độ dày của đường kẻ
-              color: Color(0xffE2E2E2), // Màu sắc của đường kẻ
-              margin: EdgeInsets.symmetric(
-                vertical: 10.0,
-                horizontal: 30,
-              ), // Khoảng cách trên và dưới
+              height: 1.0,
+              color: Color(0xffE2E2E2),
+              margin: EdgeInsets.symmetric(vertical: 10.0, horizontal: 30),
             ),
 
             Padding(

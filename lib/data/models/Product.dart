@@ -1,5 +1,6 @@
 class Product {
   final String id;
+  String id_grocery;
   final String image;
   final String cardName;
   final String? weight;
@@ -7,9 +8,10 @@ class Product {
   final String? price;
 
   Product({
-    required this.id,
-    required this.image,
-    required this.cardName,
+    this.id = '1',
+    this.id_grocery = '1',
+    this.image = '',
+    this.cardName = '',
     this.quantity = 1,
     this.price,
     this.weight,
@@ -17,6 +19,7 @@ class Product {
 
   Product copyWith({
     String? id,
+    String? id_grocery,
     String? image,
     String? cardName,
     String? price,
@@ -25,6 +28,7 @@ class Product {
   }) {
     return Product(
       id: id ?? this.id,
+      id_grocery: id_grocery ?? this.id_grocery,
       image: image ?? this.image,
       cardName: cardName ?? this.cardName,
       price: price ?? this.price,

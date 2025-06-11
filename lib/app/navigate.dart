@@ -1,12 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_w1/data/models/Product.dart';
 import 'package:flutter_w1/features/account/cubit/account_cubit.dart';
 import 'package:flutter_w1/features/account/view/account_page.dart';
 import 'package:flutter_w1/features/cart/cart.dart';
+import 'package:flutter_w1/features/cart/cubit/cart_cubit.dart';
 import 'package:flutter_w1/features/explore/cubit/explore_cubit.dart';
 import 'package:flutter_w1/features/explore/explore.dart';
 import 'package:flutter_w1/features/favourite/favourite.dart';
+import 'package:flutter_w1/features/food_type/cubit/food_type_cubit.dart';
 import 'package:flutter_w1/features/home/home.dart';
+import 'package:flutter_w1/features/items/cubit/items_cubit.dart';
+import 'package:flutter_w1/features/selected_items/cubit/selected_items_cubit.dart';
 
 import '../features/home/cubit/home_cubit.dart';
 
@@ -23,10 +28,25 @@ class _NavigateBottomState extends State<NavigateBottom> {
       create: (_) => HomeCubit()..fetchProducts(),
       child: const HomePage(),
     ),
-    BlocProvider(create: (_) => ExploreCubit()..fetchCategories(), child: const ExplorePage()),
-    const CartPage(),
+    BlocProvider(
+      create: (_) => ExploreCubit()..fetchCategories(),
+      child: const ExplorePage(),
+    ),
+    MultiBlocProvider(
+      providers: [
+        BlocProvider<CartCubit>(create: (_) => CartCubit()..listFoodType()),
+        BlocProvider<FoodTypeCubit>(create: (_) => FoodTypeCubit()),
+        BlocProvider<ItemsCubit>(create: (_) => ItemsCubit()..items()),
+        BlocProvider<SelectedItemsCubit>(create: (_) => SelectedItemsCubit()),
+
+      ],
+      child: const CartPage(),
+    ),
     const FavouritePage(),
-    BlocProvider(create: (_) => AccountCubit()..fetchAccount(), child: const AccountPage()),
+    BlocProvider(
+      create: (_) => AccountCubit()..fetchAccount(),
+      child: const AccountPage(),
+    ),
   ];
 
   int _selectedIndex = 0;
