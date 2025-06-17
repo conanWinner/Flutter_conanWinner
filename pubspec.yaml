@@ -39,6 +39,8 @@ dependencies:
   equatable: ^2.0.5
   dropdown_button2: ^2.3.8
   pair: ^0.1.2
+  dio: ^5.8.0+1
+  shared_preferences: ^2.5.3
 
 
 dev_dependencies:

@@ -1,7 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_w1/data/models/Grocery.dart';
 import 'package:flutter_w1/data/models/Product.dart';
-import 'package:pair/pair.dart';
 
 part 'items_state.dart';
 

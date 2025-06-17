@@ -1,4 +1,11 @@
+import 'package:dio/dio.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_w1/core/constants/api_constants.dart';
+import 'package:flutter_w1/features/login/data/login_request.dart';
+import 'package:flutter_w1/features/login/data/login_response.dart';
+import 'package:flutter_w1/storage/storage_token.dart';
+import 'package:flutter_w1/storage/storage_user.dart';
+
 part 'login_state.dart';
 
 class LoginCubit extends Cubit<LoginState> {
@@ -9,8 +16,11 @@ class LoginCubit extends Cubit<LoginState> {
           passwordError: "",
           loading: false,
           disableButton: false,
+          alert: 0,
         ),
       );
+
+  final Dio dio = Dio();
 
   bool tmpEmail = false;
   bool tmpPassword = false;
@@ -87,18 +97,58 @@ class LoginCubit extends Cubit<LoginState> {
     }
   }
 
-  void login(String email, String password) async {
-    emit(state.copyWith(loading: true));
-    await Future.delayed(const Duration(seconds: 2));
+  // Login api
 
-    if (email == "admin@gmail.com" && password == "Thang2506@@") {
-      emit(state.copyWith(isLoginSuccess: true, loading: false));
-    } else {
-      emit(state.copyWith(isLoginSuccess: false, loading: false));
+  Future<void> login(String email, String password) async {
+    emit(state.copyWith(loading: true));
+
+    try {
+      final response = await dio.post(
+        LOGIN_POST,
+        data: LoginRequest(email: email, password: password).toJson(),
+      );
+
+      if (response.statusCode == 200) {
+        LoginResponse loginResponse = LoginResponse.fromJson(response.data);
+
+        await StorageToken.saveToken(loginResponse.accessToken);
+        emit(
+          state.copyWith(
+            isLoginSuccess: true,
+            loading: false,
+            alert: state.alert,
+          ),
+        );
+      } else {
+        emit(
+          state.copyWith(
+            isLoginSuccess: false,
+            loading: false,
+            alert: state.alert + 1,
+          ),
+        );
+      }
+    } catch (e) {
+      print(e);
+      emit(
+        state.copyWith(
+          isLoginSuccess: false,
+          loading: false,
+          alert: state.alert + 1,
+        ),
+      );
     }
   }
 
-  void logout() {
-    emit(state.copyWith(isLoginSuccess: false));
+  // Logout
+  Future<void> logout() async {
+    if (await StorageToken.removeToken() && await StorageUser.clearUserInfo()) {
+      emit(state.copyWith(isLoginSuccess: false));
+    }
   }
 }
+
+// {
+// "email": "nguyenson@yopmail.com",
+// "password": "Admin@123"
+// }

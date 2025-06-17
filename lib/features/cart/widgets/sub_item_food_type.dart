@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_w1/features/food_type/cubit/food_type_cubit.dart';
 
 class SubItemFoodType extends StatelessWidget {
   const SubItemFoodType({

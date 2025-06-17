@@ -2,19 +2,19 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_w1/features/login/cubit/login_cubit.dart';
-import 'package:flutter_w1/features/signup/signup.dart';
-import 'package:flutter_w1/features/login/login.dart';
 import 'package:flutter_w1/core/core.dart';
+import 'package:flutter_w1/core/widgets/alert.dart';
+import 'package:flutter_w1/features/account/cubit/account_cubit.dart';
+import 'package:flutter_w1/features/login/cubit/login_cubit.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
 
   @override
-  State<LoginPage> createState() => _LoginPagePageState();
+  State<LoginPage> createState() => _LoginPageState();
 }
 
-class _LoginPagePageState extends State<LoginPage> {
+class _LoginPageState extends State<LoginPage> {
   bool _showPass = false;
   TextEditingController _emailController = new TextEditingController();
   TextEditingController _passwordController = new TextEditingController();
@@ -215,7 +215,11 @@ class _LoginPagePageState extends State<LoginPage> {
                                 ),
                                 GestureDetector(
                                   onTap: () {
-                                    Navigator.pushReplacementNamed(context, "/signup");
+                                    AlertHelper.resetAlerts();
+                                    Navigator.pushReplacementNamed(
+                                      context,
+                                      "/signup",
+                                    );
                                   },
                                   child: Text(
                                     "Sign up",
@@ -259,6 +263,13 @@ class _LoginPagePageState extends State<LoginPage> {
           listener: (context, state) {
             if (state.isLoginSuccess) {
               Navigator.pushReplacementNamed(context, '/navigate');
+              context.read<AccountCubit>().getAccount();
+            } else {
+              AlertHelper.showAlertOnce(
+                context,
+                "Login failed",
+                key: state.alert.toString(),
+              );
             }
           },
         ),

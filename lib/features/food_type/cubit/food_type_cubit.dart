@@ -1,5 +1,4 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_w1/data/models/Product.dart';
 
 part 'food_type_state.dart';
 

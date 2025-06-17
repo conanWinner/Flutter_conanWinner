@@ -5,16 +5,18 @@ class SignupState {
   final String passwordError;
   final String usernameError;
   final bool loading;
-  final bool isLoginSuccess;
+  final bool isSignupSuccess;
   final bool disableButton;
+  final int alert;
 
   SignupState({
     required this.emailError,
     required this.passwordError,
     required this.usernameError,
     required this.loading,
-    this.isLoginSuccess = false,
+    this.isSignupSuccess = false,
     this.disableButton = true,
+    this.alert = 0,
   });
 
   SignupState copyWith({
@@ -22,16 +24,18 @@ class SignupState {
     String? passwordError,
     String? usernameError,
     bool? loading,
-    bool? isLoginSuccess,
+    bool? isSignupSuccess,
     bool? disableButton,
+    int? alert,
   }) {
     return SignupState(
       emailError: emailError ?? this.emailError,
       passwordError: passwordError ?? this.passwordError,
       usernameError: usernameError ?? this.usernameError,
       loading: loading ?? this.loading,
-      isLoginSuccess: isLoginSuccess ?? this.isLoginSuccess,
+      isSignupSuccess: isSignupSuccess ?? this.isSignupSuccess,
       disableButton: disableButton ?? this.disableButton,
+      alert: alert ?? this.alert,
     );
   }
 }

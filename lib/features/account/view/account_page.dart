@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_w1/core/widgets/alert.dart';
 import 'package:flutter_w1/features/account/cubit/account_cubit.dart';
 import 'package:flutter_w1/features/login/cubit/login_cubit.dart';
 
@@ -13,6 +14,9 @@ class AccountPage extends StatefulWidget {
 class _AccountPageState extends State<AccountPage> {
   @override
   Widget build(BuildContext context) {
+
+    final accountCubit = context.watch<AccountCubit>();
+
     return Scaffold(
       appBar: AppBar(
         leadingWidth: double.maxFinite,
@@ -26,7 +30,14 @@ class _AccountPageState extends State<AccountPage> {
                 builder: (context, state) {
                   return CircleAvatar(
                     radius: 26,
-                    backgroundImage: AssetImage(state.user.avatar!),
+                    backgroundImage:
+                        state.user.avatar != null &&
+                                state.user.avatar!.isNotEmpty
+                            ? NetworkImage(state.user.avatar!)
+                            : AssetImage('assets/images/avt.png'),
+                    onBackgroundImageError: (exception, stackTrace) {
+                      print('Load image error: $exception');
+                    },
                   );
                 },
               ),
@@ -42,7 +53,7 @@ class _AccountPageState extends State<AccountPage> {
                         child: BlocBuilder<AccountCubit, AccountState>(
                           builder: (context, state) {
                             return Text(
-                              state.user.name!,
+                              state.user.name ?? 'Loading...',
                               style: const TextStyle(
                                 fontSize: 20,
                                 fontWeight: FontWeight.w600,
@@ -57,7 +68,7 @@ class _AccountPageState extends State<AccountPage> {
                   BlocBuilder<AccountCubit, AccountState>(
                     builder: (context, state) {
                       return Text(
-                        state.user.email!,
+                        state.user.email ?? "Loading",
                         style: const TextStyle(
                           fontWeight: FontWeight.w200,
                           fontSize: 16,
@@ -106,7 +117,13 @@ class _AccountPageState extends State<AccountPage> {
             margin: EdgeInsets.only(top: 20, bottom: 10),
           ),
           ElevatedButton(
-            onPressed: () {},
+            onPressed: () {
+              if (context.read<AccountCubit>().deleteAccount() == false) {
+                AlertHelper.showAlertOnce(context, "Delete failed", key: accountCubit.state.alert.toString());
+              } else {
+                AlertHelper.showAlertOnce(context, "Delete success", key: accountCubit.state.alert.toString());
+              }
+            },
             child: Text(
               "Delete",
               style: TextStyle(color: Colors.white, fontSize: 18),
@@ -160,14 +177,15 @@ class _AccountPageState extends State<AccountPage> {
 
                                         BlocBuilder<LoginCubit, LoginState>(
                                           builder: (context, state) {
-                                            context.read<LoginCubit>().logout();
                                             return TextButton(
                                               onPressed: () {
-                                                Navigator.pushNamedAndRemoveUntil(
-                                                  context,
-                                                  '/login',
-                                                  (route) => false,
-                                                );
+                                                if (state.isLoginSuccess == false) {
+                                                  Navigator.pushNamedAndRemoveUntil(
+                                                    context,
+                                                    '/login',
+                                                        (route) => false,
+                                                  );
+                                                }
                                               },
                                               child: const Text('YES'),
                                             );

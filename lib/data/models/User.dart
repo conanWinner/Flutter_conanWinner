@@ -14,4 +14,22 @@ class User {
       email: email ?? this.email,
     );
   }
+
+  factory User.fromJson(Map<String, dynamic> json) {
+    return User(
+      id: json['userId'],
+      avatar: json['profilePic'],
+      name: json['displayName'],
+      email: json['email'],
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['userId'] = this.id;
+    data['profilePic'] = this.avatar;
+    data['displayName'] = this.name;
+    data['email'] = this.email;
+    return data;
+  }
 }

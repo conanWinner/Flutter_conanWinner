@@ -1,4 +1,8 @@
+import 'package:dio/dio.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_w1/core/constants/api_constants.dart';
+import 'package:flutter_w1/features/signup/data/signup_request.dart';
+
 part 'signup_state.dart';
 
 class SignupCubit extends Cubit<SignupState> {
@@ -10,8 +14,11 @@ class SignupCubit extends Cubit<SignupState> {
           usernameError: "",
           loading: false,
           disableButton: false,
+          alert: 0,
         ),
       );
+
+  final Dio dio = Dio();
 
   bool tmpEmail = false;
   bool tmpPassword = false;
@@ -38,7 +45,8 @@ class SignupCubit extends Cubit<SignupState> {
       emit(
         state.copyWith(
           emailError: '',
-          disableButton: (tmpEmail && tmpPassword && tmpUsername) ? false : true,
+          disableButton:
+              (tmpEmail && tmpPassword && tmpUsername) ? false : true,
         ),
       );
     }
@@ -115,18 +123,55 @@ class SignupCubit extends Cubit<SignupState> {
     }
   }
 
-  void login(String email, String password) async {
+  Future<void> signup(
+    String firstname,
+    String lastname,
+    String username,
+    String email,
+    String password,
+  ) async {
     emit(state.copyWith(loading: true));
-    await Future.delayed(const Duration(seconds: 2));
 
-    if (email == "admin@gmail.com" && password == "Thang2506@@") {
-      emit(state.copyWith(isLoginSuccess: true, loading: false));
-    } else {
-      emit(state.copyWith(isLoginSuccess: false, loading: false));
+    try {
+      final response = await dio.post(
+        SIGNUP_POST,
+        data:
+            SignupRequest(
+              firstName: firstname,
+              lastName: lastname,
+              username: username,
+              email: email,
+              password: password,
+            ).toJson(),
+      );
+
+      if (response.statusCode == 201) {
+        print(response.data);
+        emit(
+          state.copyWith(
+            isSignupSuccess: true,
+            loading: false,
+            alert: state.alert,
+          ),
+        );
+      } else {
+        emit(
+          state.copyWith(
+            isSignupSuccess: false,
+            loading: false,
+            alert: state.alert + 1,
+          ),
+        );
+      }
+    } on DioException catch (e) {
+      print(e.response);
+      emit(
+        state.copyWith(
+          isSignupSuccess: false,
+          loading: false,
+          alert: state.alert + 1,
+        ),
+      );
     }
-  }
-
-  void logout() {
-    emit(state.copyWith(isLoginSuccess: false));
   }
 }

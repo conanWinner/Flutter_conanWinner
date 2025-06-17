@@ -6,6 +6,7 @@ class LoginState {
   final bool loading;
   final bool isLoginSuccess;
   final bool disableButton;
+  final int alert;
 
   LoginState({
     required this.emailError,
@@ -13,6 +14,8 @@ class LoginState {
     required this.loading,
     this.isLoginSuccess = false,
     this.disableButton = true,
+    this.alert = 0,
+
   });
 
   LoginState copyWith({
@@ -21,6 +24,8 @@ class LoginState {
     bool? loading,
     bool? isLoginSuccess,
     bool? disableButton,
+    int? alert,
+
   }) {
     return LoginState(
       emailError: emailError ?? this.emailError,
@@ -28,6 +33,7 @@ class LoginState {
       loading: loading ?? this.loading,
       isLoginSuccess: isLoginSuccess ?? this.isLoginSuccess,
       disableButton: disableButton ?? this.disableButton,
+      alert: alert ?? this.alert,
     );
   }
 }

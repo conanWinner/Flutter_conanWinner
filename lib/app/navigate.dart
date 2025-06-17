@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_w1/data/models/Product.dart';
 import 'package:flutter_w1/features/account/cubit/account_cubit.dart';
 import 'package:flutter_w1/features/account/view/account_page.dart';
 import 'package:flutter_w1/features/cart/cart.dart';
@@ -28,6 +27,7 @@ class _NavigateBottomState extends State<NavigateBottom> {
       create: (_) => HomeCubit()..fetchProducts(),
       child: const HomePage(),
     ),
+
     BlocProvider(
       create: (_) => ExploreCubit()..fetchCategories(),
       child: const ExplorePage(),
@@ -38,7 +38,6 @@ class _NavigateBottomState extends State<NavigateBottom> {
         BlocProvider<FoodTypeCubit>(create: (_) => FoodTypeCubit()),
         BlocProvider<ItemsCubit>(create: (_) => ItemsCubit()..items()),
         BlocProvider<SelectedItemsCubit>(create: (_) => SelectedItemsCubit()),
-
       ],
       child: const CartPage(),
     ),

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_w1/core/utils/formatPrice.dart';
-import 'package:flutter_w1/data/models/Product.dart';
 import 'package:flutter_w1/features/detail/cubit/detail_cubit.dart';
 
 class DetailPage extends StatefulWidget {

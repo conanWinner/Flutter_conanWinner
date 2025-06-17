@@ -1,9 +1,7 @@
 import 'package:dropdown_button2/dropdown_button2.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_w1/data/models/Product.dart';
-import 'package:flutter_w1/features/cart/widgets/sub_item_food_type.dart';
 import 'package:flutter_w1/features/food_type/cubit/food_type_cubit.dart';
 import 'package:flutter_w1/features/items/cubit/items_cubit.dart';
 import 'package:flutter_w1/features/items/widgets/sub_item.dart';
